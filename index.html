@@ -75,7 +75,28 @@
         document.getElementById("sonuc").innerText = "Geçersiz şifreli metin!";
       }
     }
-  </script>
+  <script>
+  function sifrele() {
+    let metin = document.getElementById("metin").value;
+    try {
+      let sifreli = btoa(unescape(encodeURIComponent(metin)));
+      document.getElementById("sonuc").innerText = "Şifreli: " + sifreli;
+    } catch {
+      document.getElementById("sonuc").innerText = "Şifreleme hatası!";
+    }
+  }
+
+  function coz() {
+    let metin = document.getElementById("metin").value;
+    try {
+      let cozulmus = decodeURIComponent(escape(atob(metin)));
+      document.getElementById("sonuc").innerText = "Çözüldü: " + cozulmus;
+    } catch {
+      document.getElementById("sonuc").innerText =
+        "Bu Base64 değil veya farklı bir şifreleme kullanılmış.";
+    }
+  }
+</script>
 
 </body>
 </html> 
