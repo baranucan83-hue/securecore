@@ -10,36 +10,72 @@
       background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
       color:white;
       text-align:center;
-      padding-top:100px;
+      padding-top:80px;
     }
-    h1{
-      font-size:40px;
+
+    h1{ font-size:40px; }
+
+    input{
+      padding:12px;
+      width:80%;
+      max-width:300px;
+      border-radius:8px;
+      border:none;
+      margin:10px 0;
     }
+
     button{
-      padding:15px 30px;
-      font-size:18px;
+      padding:12px 20px;
+      font-size:16px;
       border:none;
       border-radius:8px;
       background:#00c6ff;
       color:white;
       cursor:pointer;
+      margin:5px;
     }
-    button:hover{
-      opacity:0.8;
+
+    #sonuc{
+      margin-top:20px;
+      font-size:18px;
+      word-wrap:break-word;
     }
   </style>
 </head>
 <body>
 
   <h1>SecureCore</h1>
-  <p>Siber Güvenlik Projesi</p>
-  <button onclick="testFonksiyon()">Test Et</button>
+  <p>Metni Şifrele / Çöz 🔐</p>
+
+  <input type="text" id="metin" placeholder="Metin gir...">
+  <br>
+
+  <button onclick="sifrele()">Şifrele</button>
+  <button onclick="coz()">Şifre Çöz</button>
+
+  <div id="sonuc"></div>
 
   <script>
-    function testFonksiyon() {
-      alert("SecureCore Test Başlatıldı 🚀");
+    function sifrele() {
+      let metin = document.getElementById("metin").value;
+      try {
+        let sifreli = btoa(metin);
+        document.getElementById("sonuc").innerText = "Şifreli: " + sifreli;
+      } catch {
+        document.getElementById("sonuc").innerText = "Hata oluştu!";
+      }
+    }
+
+    function coz() {
+      let metin = document.getElementById("metin").value;
+      try {
+        let cozulmus = atob(metin);
+        document.getElementById("sonuc").innerText = "Çözüldü: " + cozulmus;
+      } catch {
+        document.getElementById("sonuc").innerText = "Geçersiz şifreli metin!";
+      }
     }
   </script>
 
 </body>
-</html>
+</html> 
