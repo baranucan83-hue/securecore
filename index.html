@@ -56,14 +56,11 @@
   <div id="sonuc"></div>
 
   
+  <script>
   function sifrele() {
     let metin = document.getElementById("metin").value;
-    try {
-      let sifreli = btoa(unescape(encodeURIComponent(metin)));
-      document.getElementById("sonuc").innerText = "Şifreli: " + sifreli;
-    } catch {
-      document.getElementById("sonuc").innerText = "Şifreleme hatası!";
-    }
+    let sifreli = btoa(unescape(encodeURIComponent(metin)));
+    document.getElementById("sonuc").innerText = "Şifreli: " + sifreli;
   }
 
   function coz() {
@@ -71,9 +68,8 @@
     try {
       let cozulmus = decodeURIComponent(escape(atob(metin)));
       document.getElementById("sonuc").innerText = "Çözüldü: " + cozulmus;
-    } catch {
-      document.getElementById("sonuc").innerText =
-        "Bu Base64 değil veya farklı bir şifreleme kullanılmış.";
+    } catch (e) {
+      document.getElementById("sonuc").innerText = "Geçersiz veya farklı şifreleme!";
     }
   }
 </script>
