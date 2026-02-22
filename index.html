@@ -21,8 +21,11 @@
       border:none;
       border-radius:8px;
       background:#00c6ff;
-      color:black;
+      color:white;
       cursor:pointer;
+    }
+    button:hover{
+      opacity:0.8;
     }
   </style>
 </head>
@@ -30,7 +33,13 @@
 
   <h1>SecureCore</h1>
   <p>Siber Güvenlik Projesi</p>
-  <button onclick="alert('Sistem Aktif')">Test Et</button>
+  <button onclick="testFonksiyon()">Test Et</button>
+
+  <script>
+    function testFonksiyon() {
+      alert("SecureCore Test Başlatıldı 🚀");
+    }
+  </script>
 
 </body>
 </html>
