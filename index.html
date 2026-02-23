@@ -73,6 +73,53 @@
     }
   }
 </script>
+<h2>SecureCore Gizli Anahtar</h2>
 
+<input id="secretKey" placeholder="Gizli kod gir (örn: SC16-Baran-2026)">
+<button onclick="initFromSecret()">Anahtarı Yükle</button>
+
+<p id="secretStatus"></p>
+
+<script>
+async function sha256Hex(str){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2,"0")).join("");
+}
+
+function hexToInt(hex){
+  return parseInt(hex,16);
+}
+
+async function initFromSecret(){
+  const secret = document.getElementById("secretKey").value.trim();
+  if(!secret){
+    alert("Gizli kod giriniz.");
+    return;
+  }
+
+  const hash = await sha256Hex(secret);
+
+  // Hash'ten parametre üretimi
+  const a = hexToInt(hash.substring(0,8)) % 1000000;
+  const b = hexToInt(hash.substring(8,16)) % 1000000;
+  const pBase = hexToInt(hash.substring(16,24)) % 900000 + 100000;
+
+  // p'yi tek sayı yap (basit asal yaklaşım)
+  const p = pBase % 2 === 0 ? pBase + 1 : pBase;
+
+  const iterations = (hexToInt(hash.substring(24,28)) % 20) + 5;
+
+  // Formlara yaz
+  document.getElementById("a0").value = a;
+  document.getElementById("b0").value = b;
+  document.getElementById("p0").value = p;
+
+  window.secureIterations = iterations;
+
+  document.getElementById("secretStatus").innerText =
+    "Parametreler üretildi ✓ Iterasyon: " + iterations;
+}
+</script>
 </body>
 </html> 
