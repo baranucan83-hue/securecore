@@ -1,124 +1,174 @@
+
+
+
 <!DOCTYPE html>
+<html>
 <head>
   <title>SecureCore</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body{
       margin:0;
-      font-family:Arial, sans-serif;
-      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      font-family:Arial;
+      background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
       color:white;
       text-align:center;
-      padding-top:80px;
+      padding:20px;
     }
 
-    h1{ font-size:40px; }
-
-    input{
-      padding:12px;
-      width:80%;
-      max-width:300px;
-      border-radius:8px;
-      border:none;
-      margin:10px 0;
-    }
-
-    button{
-      padding:12px 20px;
-      font-size:16px;
-      border:none;
-      border-radius:8px;
-      background:#00c6ff;
-      color:white;
-      cursor:pointer;
+    input,button{
+      padding:10px;
       margin:5px;
+      border-radius:8px;
+      border:none;
     }
 
-    #sonuc{
+    button{background:#00c6ff;color:white;cursor:pointer}
+
+    #chat{
       margin-top:20px;
-      font-size:18px;
-      word-wrap:break-word;
+      max-width:500px;
+      margin-left:auto;
+      margin-right:auto;
+      text-align:left;
+      background:rgba(0,0,0,0.3);
+      padding:10px;
+      border-radius:10px;
+      height:250px;
+      overflow:auto;
+    }
+
+    .msg{
+      margin:5px 0;
+      padding:5px;
+      border-bottom:1px solid rgba(255,255,255,0.2);
     }
   </style>
 </head>
+
 <body>
 
-  <h1>SecureCore</h1>
-  <p>Metni Şifrele / Çöz 🔐</p>
+<h1>SecureCore 🔐💬</h1>
 
-  <input type="text" id="metin" placeholder="Metin gir...">
-  <br>
+<!-- ANAHTAR -->
+<h3>Anahtar Sistemi</h3>
+<input id="secretKey" placeholder="Gizli anahtar">
+<button onclick="loadKey()">Anahtarı Yükle</button>
+<p id="status"></p>
 
-  <button onclick="sifrele()">Şifrele</button>
-  <button onclick="coz()">Şifre Çöz</button>
+<hr>
 
-  <div id="sonuc"></div>
+<!-- MESAJ -->
+<h3>Mesaj Gönder</h3>
+<input id="msg" placeholder="Mesaj yaz">
+<button onclick="sendMsg()">Gönder</button>
 
-  
-  <script>
-  function sifrele() {
-    let metin = document.getElementById("metin").value;
-    let sifreli = btoa(unescape(encodeURIComponent(metin)));
-    document.getElementById("sonuc").innerText = "Şifreli: " + sifreli;
-  }
-
-  function coz() {
-    let metin = document.getElementById("metin").value;
-    try {
-      let cozulmus = decodeURIComponent(escape(atob(metin)));
-      document.getElementById("sonuc").innerText = "Çözüldü: " + cozulmus;
-    } catch (e) {
-      document.getElementById("sonuc").innerText = "Geçersiz veya farklı şifreleme!";
-    }
-  }
-</script>
-<h2>SecureCore Gizli Anahtar</h2>
-
-<input id="secretKey" placeholder="Gizli kod gir (örn: SC16-Baran-2026)">
-<button onclick="initFromSecret()">Anahtarı Yükle</button>
-
-<p id="secretStatus"></p>
+<div id="chat"></div>
 
 <script>
-async function sha256Hex(str){
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf))
-    .map(b => b.toString(16).padStart(2,"0")).join("");
+
+let cryptoKey = null;
+let messages = [];
+
+/* HASH -> AES KEY */
+async function sha256(data){
+  const enc = new TextEncoder().encode(data);
+  const hash = await crypto.subtle.digest("SHA-256", enc);
+  return hash;
 }
 
-function hexToInt(hex){
-  return parseInt(hex,16);
-}
+async function loadKey(){
+  const secret = document.getElementById("secretKey").value;
 
-async function initFromSecret(){
-  const secret = document.getElementById("secretKey").value.trim();
   if(!secret){
-    alert("Gizli kod giriniz.");
+    alert("Anahtar gir!");
     return;
   }
 
-  const hash = await sha256Hex(secret);
+  const keyMaterial = await sha256(secret);
 
-  // Hash'ten parametre üretimi
-  const a = hexToInt(hash.substring(0,8)) % 1000000;
-  const b = hexToInt(hash.substring(8,16)) % 1000000;
-  const pBase = hexToInt(hash.substring(16,24)) % 900000 + 100000;
+  cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    keyMaterial,
+    "AES-GCM",
+    false,
+    ["encrypt","decrypt"]
+  );
 
-  // p'yi tek sayı yap (basit asal yaklaşım)
-  const p = pBase % 2 === 0 ? pBase + 1 : pBase;
-
-  const iterations = (hexToInt(hash.substring(24,28)) % 20) + 5;
-
-  // Formlara yaz
-  document.getElementById("").vala0ue = a;
-  document.getElementById("b0").value = b;
-  document.getElementById("p0").value = p;
-
-  window.secureIterations = iterations;
-
-  document.getElementById("secretStatus").innerText =
-    "Parametreler üretildi ✓ Iterasyon: " + iterations;
+  document.getElementById("status").innerText = "✔ Anahtar aktif!";
 }
+
+/* MESAJ ŞİFRELE */
+async function encrypt(text){
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+
+  const enc = new TextEncoder().encode(text);
+
+  const encrypted = await crypto.subtle.encrypt(
+    {name:"AES-GCM", iv},
+    cryptoKey,
+    enc
+  );
+
+  const full = new Uint8Array(iv.length + encrypted.byteLength);
+  full.set(iv);
+  full.set(new Uint8Array(encrypted), iv.length);
+
+  return btoa(String.fromCharCode(...full));
+}
+
+/* MESAJ ÇÖZ */
+async function decrypt(data){
+  const bytes = Uint8Array.from(atob(data), c => c.charCodeAt(0));
+
+  const iv = bytes.slice(0,12);
+  const msg = bytes.slice(12);
+
+  const dec = await crypto.subtle.decrypt(
+    {name:"AES-GCM", iv},
+    cryptoKey,
+    msg
+  );
+
+  return new TextDecoder().decode(dec);
+}
+
+/* MESAJ GÖNDER */
+async function sendMsg(){
+  if(!cryptoKey){
+    alert("Önce anahtar yükle!");
+    return;
+  }
+
+  const text = document.getElementById("msg").value;
+  if(!text) return;
+
+  const encrypted = await encrypt(text);
+
+  messages.push(encrypted);
+  renderChat();
+}
+
+/* CHAT GÖSTER */
+async function renderChat(){
+  const chat = document.getElementById("chat");
+  chat.innerHTML = "";
+
+  for(let m of messages){
+    let text;
+
+    try{
+      text = await decrypt(m);
+    }catch(e){
+      text = "❌ çözülemedi";
+    }
+
+    chat.innerHTML += `<div class="msg">💬 ${text}</div>`;
+  }
+}
+
 </script>
+
 </body>
-</html> 
+</html>
