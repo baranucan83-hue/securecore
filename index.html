@@ -1,1 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SecureCore Chat FIX</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f2027;
+  color:white;
+  display:flex;
+  justify-content:center;
+}
+.container{width:95%;max-width:800px;height:95vh;display:flex;flex-direction:column;padding:10px}
+h1{text-align:center;color:#ff6f91}
+input,button{padding:10px;margin:5px 0;border-radius:8px;border:none}
+button{background:#00c6ff;color:white;cursor:pointer}
+#chat{flex:1;overflow:auto;background:#203a43;padding:10px;border-radius:10px}
+.msg{background:#30475e;padding:8px;margin:5px 0;border-radius:8px}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>SecureCore Chat 💬</h1>
+
+<div id="loginBox">
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Şifre">
+  <button onclick="login()">Giriş Yap</button>
+</div>
+
+<div id="appBox" style="display:none;flex:1;flex-direction:column;">
+  <input id="room" placeholder="Oda adı">
+  <button onclick="joinRoom()">Odaya Gir</button>
+
+  <div id="chat"></div>
+
+  <input id="msg" placeholder="Mesaj">
+  <button onclick="sendMsg()">Gönder</button>
+</div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB9hBRTJ4BLMLpmAPxwPdbrNbk2UuAV3i4",
+  authDomain: "core-chat-3be96.firebaseapp.com",
+  databaseURL: "https://core-chat-3be96-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "core-chat-3be96",
+  storageBucket: "core-chat-3be96.appspot.com",
+  messagingSenderId: "555994455959",
+  appId: "1:555994455959:web:9dbd659b1970c491042ed2"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+/* 🔥 ELEMENTLERİ GARANTİ AL */
+const emailEl = document.getElementById("email");
+const passEl = document.getElementById("password");
+const roomEl = document.getElementById("room");
+const msgEl = document.getElementById("msg");
+const chatEl = document.getElementById("chat");
+
+/* LOGIN */
+function login(){
+  auth.signInWithEmailAndPassword(emailEl.value, passEl.value)
+  .then(()=>{
+    loginBox.style.display="none";
+    appBox.style.display="flex";
+  })
+  .catch(e=>alert(e.message));
+}
+
+/* ROOM */
+let currentRoom = null;
+
+function joinRoom(){
+  if(!roomEl.value) return alert("Oda gir!");
+
+  chatEl.innerHTML="";
+  currentRoom = roomEl.value;
+
+  db.ref("rooms/"+currentRoom).off();
+
+  db.ref("rooms/"+currentRoom).on("child_added", snap=>{
+    const d = snap.val();
+
+    const div = document.createElement("div");
+    div.className="msg";
+
+    div.innerHTML=`
+      <b>${d.user}</b><br>
+      ${d.text}<br>
+      <small>${new Date(d.time).toLocaleString()}</small>
+    `;
+
+    chatEl.appendChild(div);
+    chatEl.scrollTop = chatEl.scrollHeight;
+  });
+}
+
+/* SEND */
+function sendMsg(){
+  if(!currentRoom) return alert("Önce odaya gir!");
+  if(!msgEl.value) return;
+
+  db.ref("rooms/"+currentRoom).push({
+    text: msgEl.value,
+    user: auth.currentUser.email,
+    time: Date.now()
+  });
+
+  msgEl.value="";
+}
+
+</script>
+
+</body>
+</html>
 
