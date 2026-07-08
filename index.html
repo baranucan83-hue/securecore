@@ -230,6 +230,72 @@ opacity:1;
 transform:translateY(0);
 }
 }
+ /* ===== Chat ===== */
+
+#chat{
+flex:1;
+overflow-y:auto;
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
+scroll-behavior:smooth;
+}
+
+.msg{
+max-width:75%;
+padding:15px 18px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+border-radius:18px;
+backdrop-filter:blur(10px);
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+animation:messageIn .25s ease;
+word-break:break-word;
+}
+
+.msg b{
+display:block;
+margin-bottom:6px;
+color:#00d4ff;
+}
+
+.msg small{
+display:block;
+margin-top:8px;
+opacity:.6;
+font-size:12px;
+}
+
+.message-box{
+display:flex;
+align-items:center;
+gap:12px;
+padding:20px;
+background:rgba(255,255,255,.05);
+border-top:1px solid rgba(255,255,255,.08);
+}
+
+.message-box input{
+flex:1;
+padding:16px;
+font-size:15px;
+}
+
+.message-box button{
+min-width:120px;
+}
+
+@keyframes messageIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
 </style>
 </head>
 
