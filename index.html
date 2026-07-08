@@ -167,25 +167,112 @@ transform:translateY(0);
 </head>
 
 <body>
+<div class="app">
 
-<div class="container">
-<h1>SecureCore Chat 💬</h1>
+<header class="topbar">
 
-<div id="loginBox">
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Şifre">
-  <button onclick="login()">Giriş Yap</button>
+<div class="logo">
+<div class="logo-circle">S</div>
+
+<div>
+<h2>SecureCore</h2>
+<p>Secure Messaging</p>
+</div>
 </div>
 
-<div id="appBox" style="display:none;flex:1;flex-direction:column;">
-  <input id="room" placeholder="Oda adı">
-  <button onclick="joinRoom()">Odaya Gir</button>
+<div class="actions">
 
-  <div id="chat"></div>
+<input id="search" placeholder="Ara...">
 
-  <input id="msg" placeholder="Mesaj">
-  <button onclick="sendMsg()">Gönder</button>
+<button>⚙</button>
+
+<div class="user">
+<div class="avatar">B</div>
+<div>
+<b id="userMail">Baran</b>
+<small>🟢 Online</small>
 </div>
+</div>
+
+</div>
+
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<button class="menu active">
+💬 Sohbet
+</button>
+
+<button class="menu">
+👥 Kullanıcılar
+</button>
+
+<button class="menu">
+📁 Dosyalar
+</button>
+
+<button class="menu">
+⭐ Favoriler
+</button>
+
+<button class="menu">
+⚙ Ayarlar
+</button>
+
+<div class="room">
+
+<h3>Oda</h3>
+
+<input id="room" placeholder="Oda Adı">
+
+<button onclick="joinRoom()">
+Katıl
+</button>
+
+</div>
+
+</aside>
+
+<main class="chat-area">
+
+<div class="chat-top">
+
+<div>
+<h3>Genel Sohbet</h3>
+<small>Güvenli Oda</small>
+</div>
+
+<div class="online-box">
+
+🟢 5 Çevrimiçi
+
+</div>
+
+</div>
+
+<div id="chat"></div>
+
+<div class="message-box">
+
+<button>😊</button>
+
+<input id="msg" placeholder="Mesaj yaz...">
+
+<button onclick="sendMsg()">
+Gönder
+</button>
+
+</div>
+
+</main>
+
+</div>
+
+</div>
+
 
 </div>
 
