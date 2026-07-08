@@ -167,114 +167,94 @@ transform:translateY(0);
 </head>
 
 <body>
-<div class="app">
 
-<header class="topbar">
+<body>
 
-<div class="logo">
-<div class="logo-circle">S</div>
+<div class="container">
 
-<div>
-<h2>SecureCore</h2>
-<p>Secure Messaging</p>
-</div>
-</div>
+    <!-- Giriş Ekranı -->
 
-<div class="actions">
+    <div id="loginBox" class="login-screen">
 
-<input id="search" placeholder="Ara...">
+        <div class="login-card">
 
-<button>⚙</button>
+            <div class="logo-circle">S</div>
 
-<div class="user">
-<div class="avatar">B</div>
-<div>
-<b id="userMail">Baran</b>
-<small>🟢 Online</small>
-</div>
-</div>
+            <h1>SecureCore</h1>
 
-</div>
+            <p>Private • Secure • Fast</p>
 
-</header>
+            <input
+                id="email"
+                type="email"
+                placeholder="📧 Email">
 
-<div class="layout">
+            <input
+                id="password"
+                type="password"
+                placeholder="🔒 Şifre">
 
-<aside class="sidebar">
+            <button class="login-btn" onclick="login()">
+                Giriş Yap
+            </button>
 
-<button class="menu active">
-💬 Sohbet
-</button>
+        </div>
 
-<button class="menu">
-👥 Kullanıcılar
-</button>
+    </div>
 
-<button class="menu">
-📁 Dosyalar
-</button>
+    <!-- Sohbet -->
 
-<button class="menu">
-⭐ Favoriler
-</button>
+    <div id="appBox" style="display:none;flex:1;flex-direction:column;">
 
-<button class="menu">
-⚙ Ayarlar
-</button>
+        <div class="topbar">
 
-<div class="room">
+            <div>
 
-<h3>Oda</h3>
+                <h2>💬 SecureCore Chat</h2>
 
-<input id="room" placeholder="Oda Adı">
+                <small>End-to-End Encrypted</small>
 
-<button onclick="joinRoom()">
-Katıl
-</button>
+            </div>
 
-</div>
+            <div class="status">
 
-</aside>
+                🟢 Online
 
-<main class="chat-area">
+            </div>
 
-<div class="chat-top">
+        </div>
 
-<div>
-<h3>Genel Sohbet</h3>
-<small>Güvenli Oda</small>
-</div>
+        <div class="room-panel">
 
-<div class="online-box">
+            <input
+                id="room"
+                placeholder="Oda Adını Gir">
 
-🟢 5 Çevrimiçi
+            <button onclick="joinRoom()">
+                Odaya Katıl
+            </button>
 
-</div>
+        </div>
 
-</div>
+        <div id="chat"></div>
 
-<div id="chat"></div>
+        <div class="message-panel">
 
-<div class="message-box">
+            <input
+                id="msg"
+                placeholder="Mesaj yaz...">
 
-<button>😊</button>
+            <button onclick="sendMsg()">
+                ➤ Gönder
+            </button>
 
-<input id="msg" placeholder="Mesaj yaz...">
+        </div>
 
-<button onclick="sendMsg()">
-Gönder
-</button>
+    </div>
 
 </div>
 
-</main>
-
-</div>
-
-</div>
-
-
-</div>
+</body>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
