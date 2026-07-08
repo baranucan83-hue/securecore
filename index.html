@@ -174,25 +174,37 @@ transform:translateY(0);
 
     <!-- Giriş Ekranı -->
 
-    <div id="loginBox" class="login-screen">
+<div id="loginBox" class="login-screen">
 
-        <div class="login-card">
+    <div class="login-card">
+
+        <div class="login-glow"></div>
+
+        <div class="login-header">
 
             <div class="logo-circle">S</div>
 
             <h1>SecureCore</h1>
 
-            <p>Private • Secure • Fast</p>
+            <p>Secure Chat Platform</p>
+
+        </div>
+
+        <div class="login-form">
+
+            <label>Email</label>
 
             <input
                 id="email"
                 type="email"
-                placeholder="📧 Email">
+                placeholder="ornek@email.com">
+
+            <label>Şifre</label>
 
             <input
                 id="password"
                 type="password"
-                placeholder="🔒 Şifre">
+                placeholder="Şifreniz">
 
             <button class="login-btn" onclick="login()">
                 Giriş Yap
@@ -200,7 +212,17 @@ transform:translateY(0);
 
         </div>
 
+        <div class="login-footer">
+
+            <span>🔒 Güvenli</span>
+
+            <span>⚡ Firebase</span>
+
+        </div>
+
     </div>
+
+</div>
 
     <!-- Sohbet -->
 
