@@ -228,56 +228,132 @@ font-size:13px;
 </head>
 
 <body>
-
 <body>
 
-<div class="container">
+<div class="app">
 
-    <!-- Giriş Ekranı -->
+    <!-- LOGIN -->
 
-<div id="loginBox" class="login-screen">
+    <div id="loginBox" class="login-screen">
 
-    <div class="login-card">
+        <div class="login-card">
 
-        <div class="login-glow"></div>
+            <div class="login-glow"></div>
 
-        <div class="login-header">
+            <div class="login-header">
 
-            <div class="logo-circle">S</div>
+                <div class="logo-circle">S</div>
 
-            <h1>SecureCore</h1>
+                <h1>SecureCore</h1>
 
-            <p>Secure Chat Platform</p>
+                <p>Private • Secure • Fast</p>
+
+            </div>
+
+            <div class="login-form">
+
+                <label>Email</label>
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="ornek@email.com">
+
+                <label>Şifre</label>
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Şifrenizi girin">
+
+                <button class="login-btn" onclick="login()">
+                    Giriş Yap
+                </button>
+
+            </div>
+
+            <div class="login-footer">
+
+                <span>🔒 Güvenli</span>
+
+                <span>⚡ Firebase</span>
+
+            </div>
 
         </div>
 
-        <div class="login-form">
+    </div>
 
-            <label>Email</label>
+    <!-- CHAT -->
+
+    <div id="appBox" style="display:none;">
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <div class="brand-icon">S</div>
+
+                <div>
+
+                    <h2>SecureCore</h2>
+
+                    <small>Secure Messaging Platform</small>
+
+                </div>
+
+            </div>
 
             <input
-                id="email"
-                type="email"
-                placeholder="ornek@email.com">
+                class="search"
+                placeholder="Sohbet Ara...">
 
-            <label>Şifre</label>
+        </header>
 
-            <input
-                id="password"
-                type="password"
-                placeholder="Şifreniz">
+        <div class="content">
 
-            <button class="login-btn" onclick="login()">
-                Giriş Yap
-            </button>
+            <aside class="sidebar">
 
-        </div>
+                <h3>Odalar</h3>
 
-        <div class="login-footer">
+                <input
+                    id="room"
+                    placeholder="Oda Adı">
 
-            <span>🔒 Güvenli</span>
+                <button onclick="joinRoom()">
+                    Odaya Gir
+                </button>
 
-            <span>⚡ Firebase</span>
+                <div class="menu">
+
+                    <div>💬 Genel</div>
+                    <div>⭐ Favoriler</div>
+                    <div>📁 Dosyalar</div>
+                    <div>⚙ Ayarlar</div>
+
+                </div>
+
+            </aside>
+
+            <main class="chat-panel">
+
+                <div id="chat"></div>
+
+                <div class="message-box">
+
+                    <button>😊</button>
+
+                    <input
+                        id="msg"
+                        placeholder="Mesaj yaz...">
+
+                    <button onclick="sendMsg()">
+                        Gönder
+                    </button>
+
+                </div>
+
+            </main>
 
         </div>
 
@@ -285,57 +361,7 @@ font-size:13px;
 
 </div>
 
-    <!-- Sohbet -->
-
-    <div id="appBox" style="display:none;flex:1;flex-direction:column;">
-
-        <div class="topbar">
-
-            <div>
-
-                <h2>💬 SecureCore Chat</h2>
-
-                <small>End-to-End Encrypted</small>
-
-            </div>
-
-            <div class="status">
-
-                🟢 Online
-
-            </div>
-
-        </div>
-
-        <div class="room-panel">
-
-            <input
-                id="room"
-                placeholder="Oda Adını Gir">
-
-            <button onclick="joinRoom()">
-                Odaya Katıl
-            </button>
-
-        </div>
-
-        <div id="chat"></div>
-
-        <div class="message-panel">
-
-            <input
-                id="msg"
-                placeholder="Mesaj yaz...">
-
-            <button onclick="sendMsg()">
-                ➤ Gönder
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
+</body>
 
 </body>
 
